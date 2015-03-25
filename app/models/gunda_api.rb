@@ -11,7 +11,7 @@ class GundaApi
     user = User.new
 
     response = response.body[:patron_account_response]
-    #pp response
+    pp response
 
     user.name = response[:patron_name][:last]
     user.expiration_date = response[:expiration_date]
@@ -32,7 +32,13 @@ class GundaApi
     # Create loan objects
     loans = []
     if response[:checkouts]
-      response[:checkouts][:checkout].each do |checkout|
+      if response[:checkouts][:checkout].class != Array
+        array = []
+        array << response[:checkouts][:checkout]
+      else
+        array = response[:checkouts][:checkout]
+      end
+      array.each do |checkout|
         loan = Loan.new
 
         loan.barcode = checkout[:checkout_item][:@barcode]
@@ -51,38 +57,52 @@ class GundaApi
     requests = []
     if response[:requests]
 
-      # Special handling if only one record exists
-      if response[:requests][:request].first.first == :request_bibliographic_record   
-        puts response[:requests][:request]
-        req = response[:requests][:request]
-        request = Request.new
-            #puts req
-            request.title = req[:request_bibliographic_record][:@title]
-            request.pickup_location = req[:pickup_location][:@pickup_location_name]
-            request.expiration_date = req[:@expiration_date]
-            request.status = req[:@status]
-            request.queue_position = req[:@queue_position]
-
-            requests << request
-      
+      # Create encapsulating array if only one record is present
+      if response[:requests][:request].class != Array
+        array = []
+        array << response[:requests][:request]
       else
+        array = response[:requests][:request]
+      end
 
-        if response[:requests][:request]
-          response[:requests][:request].each do |req|
-            request = Request.new
-            #puts req
-            request.title = req[:request_bibliographic_record][:@title]
-            request.pickup_location = req[:pickup_location][:@pickup_location_name]
-            request.expiration_date = req[:@expiration_date]
-            request.status = req[:@status]
-            request.queue_position = req[:@queue_position]
+      array.each do |req_raw|
+        request = Request.new
+        #puts req
+        request.title = req_raw[:request_bibliographic_record][:@title]
+        request.pickup_location = req_raw[:pickup_location][:@pickup_location_name]
+        request.expiration_date = req_raw[:@expiration_date]
+        request.status = req_raw[:@status]
+        request.queue_position = req_raw[:@queue_position]
 
-            requests << request
-          end
-        end
+        requests << request
       end
     end
     user.requests = requests
+
+    fines = []
+    if response[:fines][:fine]
+
+      if response[:fines][:fine].class != Array
+        array = []
+        array << response[:fines][:fine]
+      else
+        array = response[:fines][:fine]
+      end
+
+      array.each do |fine_raw|
+        fine = Fine.new
+        pp fine_raw
+        fine.title = fine_raw[:fine_bibliographic_record][:@title]
+        fine.type = fine_raw[:@fine_code]
+        fine.amount = fine_raw[:@amount]
+        fine.balance = fine_raw[:@balance]
+        fine.date = fine_raw[:@date]
+
+        fines << fine
+      end
+
+    end
+    user.fines = fines
 
     return user
   end
