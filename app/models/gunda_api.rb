@@ -11,6 +11,12 @@ class GundaApi
     user = User.new
 
     response = response.body[:patron_account_response]
+    #pp response
+    
+
+    user.name = response[:patron_name][:last]
+    user.expiration_date = response[:expiration_date]
+    user.barcode = response[:barcode].first
 
     contact_information = response[:contact_information]
     user.street = contact_information[:primary_address][:street]
@@ -18,13 +24,17 @@ class GundaApi
     user.postal_code = contact_information[:primary_address][:postal_code]
     user.phone_nr = contact_information[:primary_address][:telephone]
     user.mobile_nr = contact_information[:primary_address][:telephone_special]
+    user.communication_preference = contact_information[:@communication_preference]
+    user.preferred_language = contact_information[:@preferred_language]
+
+    user.total_fine = response[:fines][:@total_balance]
+    
 
     # Create loan objects
     loans = []
-    #puts response[:checkouts][:checkout]
     response[:checkouts][:checkout].each do |checkout|
       loan = Loan.new
-      pp checkout
+
       loan.barcode = checkout[:checkout_item][:@barcode]
       loan.title = checkout[:checkout_bibliographic_record][:@title]
       loan.due_date = checkout[:@due_date]
@@ -33,11 +43,24 @@ class GundaApi
       loan.renewable = checkout[:@renewable]
 
       loans << loan
-
-    
     end
-
     user.current_loans = loans
+
+    # Create request objects
+    requests = []
+    response[:requests][:request].each do |req|
+      request = Request.new
+      
+      request.title = req[:request_bibliographic_record][:@title]
+      request.pickup_location = req[:pickup_location][:@pickup_location_name]
+      request.expiration_date = req[:@expiration_date]
+      request.status = req[:@status]
+      request.queue_position = req[:@queue_position]
+
+      requests << request
+    end
+    user.requests = requests
+    
     return user
   end
 
