@@ -1,3 +1,4 @@
 APP_CONFIG = {}
 APP_CONFIG["api_user"] = ''
 APP_CONFIG["api_password"] = ''
+APP_CONFIG["api_url"] = ""
