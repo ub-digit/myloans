@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+  <soapenv:Body>
+    <chamo:patronAccountResponse xmlns:chamo="http://vtls.com/chamo/schemas">
+      <patronId>241002</patronId>
+      <barcode type="primary" status="1">14</barcode>
+      <barcode type="alternate" status="1">14</barcode>
+      <patronName>
+        <last>Person, Test</last>
+      </patronName>
+      <expirationDate>2014-07-26T15:12:00.000+02:00</expirationDate>
+      <contactInformation communicationPreference="1" maintainCheckoutHistory="false" preferredLanguage="eng">
+        <primaryAddress>
+          <street>Testgatan 209b</street>
+          <city>Ankeborg</city>
+          <postalCode>88888</postalCode>
+          <telephone>071-77777777</telephone>
+          <email>Test.Person@gmail.com</email>
+        </primaryAddress>
+      </contactInformation>
+      <fines totalBalance="320.0">
+        <fine fineId="284346" fineCode="Checked Out Overdue" date="2014-10-29T11:49:00.000+01:00" amount="160" balance="160">
+          <fineBibliographicRecord bibId="1323023" sortTitle="DOING BUSINESS IN EUROPE GABRIELE SUDER" title="Doing business in Europe / Gabriele Suder  "/>
+          <fineItem barcode="1001272733"/>
+        </fine>
+        <fine fineId="284675" fineCode="Checked Out Overdue" date="2014-10-29T11:49:00.000+01:00" amount="160" balance="160">
+          <fineBibliographicRecord bibId="1563397" sortTitle="CORPORATE FINANCE JONATHAN BERK PETER DEMARZO" title="Corporate finance / Jonathan Berk, Peter DeMarzo  "/>
+          <fineItem barcode="1001196803"/>
+        </fine>
+      </fines>
+      <checkouts>
+        <checkout checkoutId="1630841" checkoutDate="2014-02-11T13:13:42.000+01:00" dueDate="2014-02-25T23:59:00.000+01:00" recallableDate="2014-02-25T23:59:00.000+01:00" status="overdue" renewable="false">
+          <checkoutBibliographicRecord bibId="1323023" sortTitle="DOING BUSINESS IN EUROPE GABRIELE SUDER" title="Doing business in Europe / Gabriele Suder  "/>
+          <checkoutItem barcode="1001272733"/>
+          <lastNotice type="1" count="1"/>
+          <location locationName="Ekonomiska biblioteket"/>
+          <renewal count="0"/>
+        </checkout>
+        <checkout checkoutId="1760420" checkoutDate="2014-02-19T14:18:36.000+01:00" dueDate="2014-03-05T23:59:00.000+01:00" recallableDate="2014-03-05T23:59:00.000+01:00" status="overdue" renewable="false">
+          <checkoutBibliographicRecord bibId="1563397" sortTitle="CORPORATE FINANCE JONATHAN BERK PETER DEMARZO" title="Corporate finance / Jonathan Berk, Peter DeMarzo  "/>
+          <checkoutItem barcode="1001196803"/>
+          <lastNotice type="1" count="1"/>
+          <location locationName="Ekonomiska biblioteket"/>
+          <renewal count="0"/>
+        </checkout>
+      </checkouts>
+      <requests/>
+      <patronType patronTypeId="SU"/>
+      <patronBlocks>
+        <patronBlock patronBlockId="finesOwed"/>
+        <patronBlock patronBlockId="daysOverdue"/>
+      </patronBlocks>
+      <parameters lowestBlockOwedAmount="70.0"/>
+    </chamo:patronAccountResponse>
+  </soapenv:Body>
+</soapenv:Envelope>
