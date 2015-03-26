@@ -8,7 +8,7 @@ class GundaApi
     response = client.call(:patron_account, message: { barcode: pnr })
 
     user = User.new
-pp response
+    pp response
 
     response = response.body[:patron_account_response]
     pp response
@@ -105,6 +105,18 @@ pp response
     user.fines = fines
 
     return user
+  end
+
+  # Authenticates a user account by username and password
+  def self.authenticate_user(username:, password:)
+    pp username
+    pp password
+    client = Savon.client(wsdl: "#{APP_CONFIG['api_url']}/authenticatePatron.wsdl", basic_auth: [APP_CONFIG['api_user'], APP_CONFIG["api_password"]])
+    response = client.call(:authenticate_patron, message: {barcode: username, password: password})
+
+    authenticated = response.body[:authenticate_patron_response][:authenticated]
+
+    return authenticated
   end
 
 end
