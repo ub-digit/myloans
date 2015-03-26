@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+  <soapenv:Body>
+    <chamo:patronAccountResponse xmlns:chamo="http://vtls.com/chamo/schemas">
+      <patronId>243116</patronId>
+      <barcode type="primary" status="1">10</barcode>
+      <barcode type="alternate" status="1">10</barcode>
+      <patronName>
+        <last>Person, Test</last>
+      </patronName>
+      <expirationDate>2015-02-18T13:56:00.000+01:00</expirationDate>
+      <contactInformation communicationPreference="2" maintainCheckoutHistory="false" preferredLanguage="swe">
+        <primaryAddress>
+          <street>Testgatan 209b</street>
+          <city>Ankeborg</city>
+          <postalCode>88888</postalCode>
+          <telephone>071-77777777</telephone>
+          <email>Test.Person@gmail.com</email>
+        </primaryAddress>
+      </contactInformation>
+      <fines totalBalance="0.0"/>
+      <checkouts>
+        <checkout checkoutId="1529777" checkoutDate="2014-02-18T14:29:44.000+01:00" dueDate="2014-05-19T23:59:00.000+02:00" recallableDate="2014-03-20T23:59:00.000+01:00" status="overdue" renewable="true">
+          <checkoutBibliographicRecord bibId="1219732" sortTitle="LANGUAGE AND GENDER AN ADVANCED RESOURCE BOOK JANE SUNDERLAND" title="Language and gender : an advanced resource book / Jane Sunderland  "/>
+          <checkoutItem barcode="1001260929"/>
+          <location locationName="Humanistiska biblioteket"/>
+          <renewal count="0"/>
+        </checkout>
+        <checkout checkoutId="1643479" checkoutDate="2014-02-18T14:29:44.000+01:00" dueDate="2014-05-19T23:59:00.000+02:00" recallableDate="2014-03-20T23:59:00.000+01:00" status="overdue" renewable="true">
+          <checkoutBibliographicRecord bibId="1342112" sortTitle="JcMSTcLLT SPRbK EN HANDBOK I ATT SKRIVA OCH TALA JcMSTcLLT KARIN MILLES" title="J\xC3\xA4mst\xC3\xA4llt spr\xC3\xA5k : en handbok i att skriva och tala j\xC3\xA4mst\xC3\xA4llt / Karin Milles  "/>
+          <checkoutItem barcode="1001693704"/>
+          <location locationName="Humanistiska biblioteket"/>
+          <renewal count="0"/>
+        </checkout>
+        <checkout checkoutId="1682497" checkoutDate="2014-02-18T14:29:47.000+01:00" dueDate="2014-05-19T23:59:00.000+02:00" recallableDate="2014-03-20T23:59:00.000+01:00" status="overdue" renewable="true">
+          <checkoutBibliographicRecord bibId="1381480" sortTitle="LANGUAGE AND GENDER" title="Language and gender"/>
+          <checkoutItem barcode="1001688670"/>
+          <location locationName="Humanistiska biblioteket"/>
+          <renewal count="0"/>
+        </checkout>
+        <checkout checkoutId="1859308" checkoutDate="2014-02-18T14:29:40.000+01:00" dueDate="2014-05-19T23:59:00.000+02:00" recallableDate="2014-03-20T23:59:00.000+01:00" status="overdue" renewable="true">
+          <checkoutBibliographicRecord bibId="1786288" sortTitle="DUELS AND DUETS WHY MEN AND WOMEN TALK SO DIFFERENTLY JOHN L LOCKE" title="Duels and duets : why men and women talk so differently / John L. Locke. "/>
+          <checkoutItem barcode="1001825188"/>
+          <location locationName="Humanistiska biblioteket"/>
+          <renewal count="0"/>
+        </checkout>
+      </checkouts>
+      <requests/>
+      <patronType patronTypeId="EX"/>
+      <patronBlocks>
+        <patronBlock patronBlockId="daysOverdue"/>
+      </patronBlocks>
+      <parameters lowestBlockOwedAmount="70.0"/>
+    </chamo:patronAccountResponse>
+  </soapenv:Body>
+</soapenv:Envelope>

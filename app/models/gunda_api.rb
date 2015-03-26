@@ -5,13 +5,12 @@ class GundaApi
   # Returns a User object incl. dependencies
   def self.find_user(pnr)
     client = Savon.client(wsdl: "#{APP_CONFIG['api_url']}/patronAccount.wsdl", basic_auth: [APP_CONFIG['api_user'], APP_CONFIG["api_password"]])
+
     response = client.call(:patron_account, message: { barcode: pnr })
 
     user = User.new
-    pp response
 
     response = response.body[:patron_account_response]
-    pp response
 
     user.name = response[:patron_name][:last]
     user.expiration_date = response[:expiration_date]
@@ -30,7 +29,7 @@ class GundaApi
     
 
     # Create loan objects
-    loans = []
+    checkouts = []
     if response[:checkouts]
       if response[:checkouts][:checkout].class != Array
         array = []
@@ -38,20 +37,20 @@ class GundaApi
       else
         array = response[:checkouts][:checkout]
       end
-      array.each do |checkout|
-        loan = Loan.new
+      array.each do |checkout_raw|
+        checkout = Checkout.new
 
-        loan.barcode = checkout[:checkout_item][:@barcode]
-        loan.title = checkout[:checkout_bibliographic_record][:@title]
-        loan.due_date = checkout[:@due_date]
-        loan.recallable_date = checkout[:@recallable_date]
-        loan.status = checkout[:@status]
-        loan.renewable = checkout[:@renewable]
+        checkout.barcode = checkout_raw[:checkout_item][:@barcode]
+        checkout.title = checkout_raw[:checkout_bibliographic_record][:@title]
+        checkout.due_date = checkout_raw[:@due_date]
+        checkout.recallable_date = checkout_raw[:@recallable_date]
+        checkout.status = checkout_raw[:@status]
+        checkout.renewable = checkout_raw[:@renewable]
 
-        loans << loan
+        checkouts << checkout
       end
     end
-    user.current_loans = loans
+    user.checkouts = checkouts
 
     # Create request objects
     requests = []
@@ -91,7 +90,6 @@ class GundaApi
 
       array.each do |fine_raw|
         fine = Fine.new
-        pp fine_raw
         fine.title = fine_raw[:fine_bibliographic_record][:@title]
         fine.type = fine_raw[:@fine_code]
         fine.amount = fine_raw[:@amount]
@@ -109,8 +107,7 @@ class GundaApi
 
   # Authenticates a user account by username and password
   def self.authenticate_user(username:, password:)
-    pp username
-    pp password
+
     client = Savon.client(wsdl: "#{APP_CONFIG['api_url']}/authenticatePatron.wsdl", basic_auth: [APP_CONFIG['api_user'], APP_CONFIG["api_password"]])
     response = client.call(:authenticate_patron, message: {barcode: username, password: password})
 
