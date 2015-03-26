@@ -55,34 +55,34 @@ RSpec.describe GundaApi, :type => :model do
     end
 
 
-    context "for a user with one loan" do
-      it "will return a user with a list of one loan" do
+    context "for a user with one checkout" do
+      it "will return a user with a list of one checkout" do
         message = { barcode: "8" }
         fixture = File.read("spec/fixtures/patronAccount/one_checkout.xml")
         savon.expects(:patron_account).with(message: message).returns(fixture)
 
         user = GundaApi.find_user("8")
         expect(user).to be_truthy
-        expect(user.current_loans).to be_truthy
-        expect(user.current_loans.first).to be_truthy
-        expect(user.current_loans.class == Array).to be_truthy
-        expect(user.current_loans.length == 1).to be_truthy
-        expect(user.current_loans.first.class == Loan).to be_truthy
+        expect(user.checkouts).to be_truthy
+        expect(user.checkouts.first).to be_truthy
+        expect(user.checkouts.class == Array).to be_truthy
+        expect(user.checkouts.length == 1).to be_truthy
+        expect(user.checkouts.first.class == Checkout).to be_truthy
       end
     end
 
-    context "for a user with many loans" do
-      it "will return a user with a list of loans" do
+    context "for a user with many checkouts" do
+      it "will return a user with a list of checkouts" do
         message = { barcode: "10" }
         fixture = File.read("spec/fixtures/patronAccount/many_checkouts.xml")
         savon.expects(:patron_account).with(message: message).returns(fixture)
 
         user = GundaApi.find_user("10")
         expect(user).to be_truthy
-        expect(user.current_loans).to be_truthy
-        expect(user.current_loans.class == Array).to be_truthy
-        expect(user.current_loans.length >= 2).to be_truthy
-        expect(user.current_loans.each{|loan| loan.class == Loan}).to be_truthy
+        expect(user.checkouts).to be_truthy
+        expect(user.checkouts.class == Array).to be_truthy
+        expect(user.checkouts.length >= 2).to be_truthy
+        expect(user.checkouts.each{|checkout| checkout.class == Checkout}).to be_truthy
       end
     end
 

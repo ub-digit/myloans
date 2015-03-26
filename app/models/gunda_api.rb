@@ -29,7 +29,7 @@ class GundaApi
     
 
     # Create loan objects
-    loans = []
+    checkouts = []
     if response[:checkouts]
       if response[:checkouts][:checkout].class != Array
         array = []
@@ -37,20 +37,20 @@ class GundaApi
       else
         array = response[:checkouts][:checkout]
       end
-      array.each do |checkout|
-        loan = Loan.new
+      array.each do |checkout_raw|
+        checkout = Checkout.new
 
-        loan.barcode = checkout[:checkout_item][:@barcode]
-        loan.title = checkout[:checkout_bibliographic_record][:@title]
-        loan.due_date = checkout[:@due_date]
-        loan.recallable_date = checkout[:@recallable_date]
-        loan.status = checkout[:@status]
-        loan.renewable = checkout[:@renewable]
+        checkout.barcode = checkout_raw[:checkout_item][:@barcode]
+        checkout.title = checkout_raw[:checkout_bibliographic_record][:@title]
+        checkout.due_date = checkout_raw[:@due_date]
+        checkout.recallable_date = checkout_raw[:@recallable_date]
+        checkout.status = checkout_raw[:@status]
+        checkout.renewable = checkout_raw[:@renewable]
 
-        loans << loan
+        checkouts << checkout
       end
     end
-    user.current_loans = loans
+    user.checkouts = checkouts
 
     # Create request objects
     requests = []
