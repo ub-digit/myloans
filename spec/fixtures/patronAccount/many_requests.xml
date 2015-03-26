@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+  <soapenv:Body>
+    <chamo:patronAccountResponse xmlns:chamo="http://vtls.com/chamo/schemas">
+      <patronId>123456</patronId>
+      <barcode type="primary" status="1">6</barcode>
+      <barcode type="alternate" status="1">6</barcode>
+      <patronName>
+        <last>Person, Test</last>
+      </patronName>
+      <expirationDate>2016-03-24T15:57:00.000+01:00</expirationDate>
+      <contactInformation communicationPreference="1" maintainCheckoutHistory="false" preferredLanguage="swe">
+        <primaryAddress>
+          <street>Test</street>
+          <city>Test</city>
+          <postalCode>123 45</postalCode>
+          <email>test.person@example.com</email>
+        </primaryAddress>
+      </contactInformation>
+      <fines totalBalance="0.0" />
+      <checkouts />
+      <requests>
+        <request requestId="5479507" datePlaced="2015-03-25T16:00:18.000+01:00" expirationDate="2015-03-30T17:00:18.000+02:00" status="pending" queuePosition="1">
+          <requestBibliographicRecord bibId="2060886" sortTitle="McNNISKORS MdTESPLATSER RbDHUSTORGET FALKENBERG SARAH ANDERSSON" title="MxC3xA4nniskors mxC3xB6tesplatser : RxC3xA5dhustorget Falkenberg / Sarah Andersson  " />
+          <pickupLocation pickupLocationId="490000" pickupLocationName="Geovetenskapliga biblioteket" />
+        </request>
+        <request requestId="5479508" datePlaced="2015-03-25T16:00:50.000+01:00" expirationDate="2015-03-31T23:59:00.000+02:00" status="pickup">
+          <requestBibliographicRecord bibId="2060887" sortTitle="IN REAL LIFE OR ELSEWHERE ESSAYS ON CREATIVE PROCESSES AND PARALLEL REALITIES IN DOCUMENTARY FILM KIRSI NEVANTI" title="In real life (or elsewhere) : [essays on creative processes and parallel realities in documentary film] / Kirsi Nevanti  " />
+          <pickupLocation pickupLocationId="480000" pickupLocationName="Ekonomiska biblioteket" />
+        </request>
+        <request requestId="5479509" datePlaced="2015-03-25T16:01:21.000+01:00" expirationDate="2015-03-31T23:59:00.000+02:00" status="pickup">
+          <requestBibliographicRecord bibId="2045931" sortTitle="NATURVETARE I MOTVIND BENGT EUPHRASEN OM SLAVAR VULKANER REGNSKOG OCH HAVSDJUR GUDRUN NYBERG" title="Naturvetare i motvind : Bengt EuphrasxC3xA9n : om slavar, vulkaner, regnskog och havsdjur / Gudrun Nyberg  " />
+          <pickupLocation pickupLocationId="440000" pickupLocationName="Humanistiska biblioteket" />
+        </request>
+        <request requestId="5479510" datePlaced="2015-03-25T16:01:58.000+01:00" expirationDate="2015-09-21T17:01:58.000+02:00" status="pending" queuePosition="2">
+          <requestBibliographicRecord bibId="2060806" sortTitle="PSYCHOBABBLE SVENSKA" title="Psyksnack! : stick hxC3xA5l pxC3xA5 sjxC3xA4lvhjxC3xA4lpsmyterna / Stephen Briers ; xC3xB6versxC3xA4ttning Erik MacQueen  " />
+          <pickupLocation pickupLocationId="500000" pickupLocationName="Campus LinnxC3xA9" />
+        </request>
+      </requests>
+      <patronType patronTypeId="SH" />
+      <parameters lowestBlockOwedAmount="70.0" />
+    </chamo:patronAccountResponse>
+  </soapenv:Body>
+</soapenv:Envelope>
+

@@ -14,7 +14,7 @@
   	    <primaryAddress>
   	      <street>Test adress</street>
   	      <city>Test</city>
-  	      <postalCode>412 58</postalCode>
+  	      <postalCode>123 45</postalCode>
   	    </primaryAddress>
       </contactInformation>
       <fines totalBalance="0.0"></fines>

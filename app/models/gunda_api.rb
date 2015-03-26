@@ -8,10 +8,9 @@ class GundaApi
     response = client.call(:patron_account, message: { barcode: pnr })
 
     user = User.new
-pp response
+    pp response
 
     response = response.body[:patron_account_response]
-    pp response
 
     user.name = response[:patron_name][:last]
     user.expiration_date = response[:expiration_date]
