@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+  <soapenv:Body>
+  	<chamo:patronAccountResponse xmlns:chamo="http://vtls.com/chamo/schemas">
+  	  <patronId>123456</patronId>
+  	  <barcode type="primary" status="1">123456789</barcode>
+      <barcode type="alternate" status="1">987654321</barcode>
+   	  <patronName>
+  	    <last>Person, Test</last>
+  	  </patronName>
+  	  <expirationDate>2016-02-12T17:59:30.000+01:00</expirationDate>
+  	  <lastUpdated>2011-06-23T12:13:00.000+02:00</lastUpdated>
+  	  <contactInformation communicationPreference="0" maintainCheckoutHistory="false" preferredLanguage="swe">
+  	    <primaryAddress>
+  	      <street>Test adress</street>
+  	      <city>Test</city>
+  	      <postalCode>412 58</postalCode>
+  	    </primaryAddress>
+      </contactInformation>
+      <fines totalBalance="0.0"></fines>
+      <checkouts></checkouts>
+      <requests>
+        <request requestId="5479500" datePlaced="2015-02-12T18:09:50.000+01:00" expirationDate="2016-02-12T18:10:22.000+01:00" status="pending" queuePosition="1">
+      	  <requestBibliographicRecord bibId="2060976" sortTitle="EL PLACER DEL CHOCOLATE" title="El placer del chocolate  "></requestBibliographicRecord>
+      	  <pickupLocation pickupLocationId="440000" pickupLocationName="Biblioteket"></pickupLocation>
+        </request>
+      </requests>
+      <patronType patronTypeId="SN"></patronType>
+      <parameters lowestBlockOwedAmount="70.0"></parameters>
+    </chamo:patronAccountResponse>
+  </soapenv:Body>
+</soapenv:Envelope>

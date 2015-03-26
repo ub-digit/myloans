@@ -4,9 +4,12 @@ class V1::UsersController < ApplicationController
   protect_from_forgery with: :exception
 
   def show
-    user_id = params[:id]
-    user = GundaApi.find_user(user_id)
-
-    render json: {user: user}, status: 200
+    begin
+      user_id = params[:id]
+      user = GundaApi.find_user(user_id)
+      render json: {user: user}, status: 200
+    rescue => error 
+      render json: {error: error}, status: 404
+    end
   end
 end
