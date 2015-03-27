@@ -16,15 +16,16 @@ class GundaApi
     user.expiration_date = response[:expiration_date]
     user.barcode = response[:barcode].first
 
-    contact_information = response[:contact_information]
-    user.email = contact_information[:primary_address][:email]
-    user.street = contact_information[:primary_address][:street]
-    user.city = contact_information[:primary_address][:city]
-    user.postal_code = contact_information[:primary_address][:postal_code]
-    user.phone_nr = contact_information[:primary_address][:telephone]
-    user.mobile_nr = contact_information[:primary_address][:telephone_special]
+    contact_information           = response[:contact_information]
+    user.street                   = contact_information[:primary_address][:street]
+    user.city                     = contact_information[:primary_address][:city]
+    user.postal_code              = contact_information[:primary_address][:postal_code]
+    user.phone_nr                 = contact_information[:primary_address][:telephone]
+    user.mobile_nr                = contact_information[:primary_address][:telephone_special]
+    user.email                    = contact_information[:primary_address][:email]
+
     user.communication_preference = contact_information[:@communication_preference]
-    user.preferred_language = contact_information[:@preferred_language]
+    user.preferred_language       = contact_information[:@preferred_language]
 
     user.total_fine = response[:fines][:@total_balance]
 

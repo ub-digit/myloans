@@ -23,6 +23,54 @@ RSpec.describe GundaApi, :type => :model do
       expect(user).to be_truthy
     end
 
+    context "for a user with minimal contact info" do
+      it "will return a user with minimal contact info" do
+        message = { barcode: "8979879872" }
+        fixture = File.read("spec/fixtures/patronAccount/minimal.xml")
+        savon.expects(:patron_account).with(message: message).returns(fixture)
+
+        user = GundaApi.find_user("8979879872")
+        expect(user.street).to be_truthy
+        expect(user.city).to be_truthy
+        expect(user.postal_code).to be_truthy
+        expect(user.phone_nr).to be_falsey
+        expect(user.mobile_nr).to be_falsey
+        expect(user.email).to be_falsey
+      end
+    end
+
+
+    context "for a user with valid contact info" do
+      it "will return a user with valid contact info" do
+        message = { barcode: "5181961938" }
+        fixture = File.read("spec/fixtures/patronAccount/valid_contact_info.xml")
+        savon.expects(:patron_account).with(message: message).returns(fixture)
+
+        user = GundaApi.find_user("5181961938")
+        expect(user.street).to be_truthy
+        expect(user.city).to be_truthy
+        expect(user.postal_code).to be_truthy
+        expect(user.phone_nr).to be_truthy
+        expect(user.mobile_nr).to be_truthy
+        expect(user.email).to be_truthy
+      end
+    end
+
+    context "for a user lacking requests" do
+      it "will return a user with an empty requests list " do
+        message = { barcode: "8" }
+        fixture = File.read("spec/fixtures/patronAccount/zero_requests.xml")
+        savon.expects(:patron_account).with(message: message).returns(fixture)
+
+        user = GundaApi.find_user("8")
+        expect(user).to be_truthy
+        expect(user.requests).to be_truthy
+        expect(user.requests.first).to be_falsey
+        expect(user.requests.class == Array).to be_truthy
+        expect(user.requests.length == 0).to be_truthy
+      end
+    end
+
     context "for a user with one request" do
       it "will return a user with a list of one request" do
         message = { barcode: "7" }
@@ -100,6 +148,37 @@ RSpec.describe GundaApi, :type => :model do
         expect(user.fines.each{|fine| fine.class == Fine}).to be_truthy
       end
     end
+
+    context "for a user with exactly one fine" do
+      it "will return a user with a list containing one fine" do
+        message = { barcode: "13" }
+        fixture = File.read("spec/fixtures/patronAccount/one_fine.xml")
+        savon.expects(:patron_account).with(message: message).returns(fixture)
+
+        user = GundaApi.find_user("13")
+        expect(user).to be_truthy
+        expect(user.fines).to be_truthy
+        expect(user.fines.class == Array).to be_truthy
+        expect(user.fines.length == 1).to be_truthy
+        expect(user.fines.each{|fine| fine.class == Fine}).to be_truthy
+      end
+    end
+
+    context "for a user with no fine" do
+      it "will return a user with an empty fine list" do
+        message = { barcode: "8" }
+        fixture = File.read("spec/fixtures/patronAccount/zero_fines.xml")
+        savon.expects(:patron_account).with(message: message).returns(fixture)
+
+        user = GundaApi.find_user("8")
+        expect(user).to be_truthy
+        expect(user.fines).to be_truthy
+        expect(user.fines.class == Array).to be_truthy
+        expect(user.fines.length == 0).to be_truthy
+        expect(user.fines.each{|fine| fine.class == Fine}).to be_truthy
+      end
+    end
+
 
   end
 end

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+  <soapenv:Body>
+    <chamo:patronAccountResponse xmlns:chamo="http://vtls.com/chamo/schemas">
+      <patronId>27588</patronId>
+      <barcode type="primary" status="1">5181961938</barcode>
+      <barcode type="alternate" status="1">4304125018</barcode>
+      <patronName>
+        <last>Person, Test</last>
+      </patronName>
+      <expirationDate>2016-03-24T15:29:35.000+01:00</expirationDate>
+      <contactInformation communicationPreference="3" maintainCheckoutHistory="false" preferredLanguage="swe">
+        <primaryAddress>
+          <street>Testgatan 209b</street>
+          <city>Ankeborg</city>
+          <postalCode>88888</postalCode>
+          <telephone>071-77777777</telephone>
+          <telephoneSpecial>0707070707</telephoneSpecial>
+          <email>Test.Person@gmail.com</email>
+        </primaryAddress>
+      </contactInformation>
+      <fines totalBalance="0.0"/>
+      <checkouts>
+        <checkout checkoutId="1556882" checkoutDate="2014-01-28T12:17:09.000+01:00" dueDate="2014-02-27T23:59:00.000+01:00" recallableDate="2014-02-27T23:59:00.000+01:00" status="recallOverdue" renewable="true">
+          <checkoutBibliographicRecord bibId="1262479" sortTitle="NORDIC MODEL OF WELFARE A HISTORICAL REAPPRAISAL EDITED BY NIELS FINN CHRISTIANSEN" title="The Nordic model of welfare : a historical reappraisal / edited by: Niels Finn Christiansen ... "/>
+          <checkoutItem barcode="1001632419"/>
+          <lastNotice type="3" count="1"/>
+          <location locationName="Samh\xC3\xA4llsvetenskapliga biblioteket"/>
+          <renewal count="0"/>
+        </checkout>
+      </checkouts>
+      <requests/>
+      <patronType patronTypeId="SS"/>
+      <patronBlocks>
+        <patronBlock patronBlockId="daysOverdue"/>
+      </patronBlocks>
+      <parameters lowestBlockOwedAmount="70.0"/>
+    </chamo:patronAccountResponse>
+  </soapenv:Body>
+</soapenv:Envelope>
