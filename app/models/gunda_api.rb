@@ -11,12 +11,13 @@ class GundaApi
     user = User.new
 
     response = response.body[:patron_account_response]
-
+    #pp response
     user.name = response[:patron_name][:last]
     user.expiration_date = response[:expiration_date]
     user.barcode = response[:barcode].first
 
     contact_information = response[:contact_information]
+    user.email = contact_information[:primary_address][:email]
     user.street = contact_information[:primary_address][:street]
     user.city = contact_information[:primary_address][:city]
     user.postal_code = contact_information[:primary_address][:postal_code]
@@ -26,6 +27,8 @@ class GundaApi
     user.preferred_language = contact_information[:@preferred_language]
 
     user.total_fine = response[:fines][:@total_balance]
+
+    user.patron_type = response[:patron_type][:@patron_type_id]
     
 
     # Create loan objects
@@ -91,7 +94,7 @@ class GundaApi
       array.each do |fine_raw|
         fine = Fine.new
         fine.title = fine_raw[:fine_bibliographic_record][:@title]
-        fine.type = fine_raw[:@fine_code]
+        fine.type = fine_raw[:@fine_code].downcase.tr(" ", "_") #Turn status to snakecase
         fine.amount = fine_raw[:@amount]
         fine.balance = fine_raw[:@balance]
         fine.date = fine_raw[:@date]
