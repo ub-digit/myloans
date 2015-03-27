@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+  <soapenv:Body>
+    <chamo:patronAccountResponse xmlns:chamo="http://vtls.com/chamo/schemas">
+      <patronId>239599</patronId>
+      <barcode type="primary" status="1">8979879872</barcode>
+      <barcode type="alternate" status="1">1199334488</barcode>
+      <patronName>
+        <last>Person, Test</last>
+      </patronName>
+      <expirationDate>2017-03-24T15:35:00.000+01:00</expirationDate>
+      <contactInformation communicationPreference="0" maintainCheckoutHistory="false" preferredLanguage="swe">
+        <primaryAddress>
+          <street>Testgatan 209b</street>
+          <city>Ankeborg</city>
+          <postalCode>88888</postalCode>
+        </primaryAddress>
+      </contactInformation>
+      <fines totalBalance="0.0"/>
+      <checkouts/>
+      <requests/>
+      <patronType patronTypeId="FI"/>
+      <parameters lowestBlockOwedAmount="70.0"/>
+    </chamo:patronAccountResponse>
+  </soapenv:Body>
+</soapenv:Envelope>
