@@ -1,3 +1,3 @@
 class Request
-  attr_accessor :title, :pickup_location, :expiration_date, :status, :queue_position
+  attr_accessor :id, :title, :pickup_location, :expiration_date, :status, :queue_position
 end

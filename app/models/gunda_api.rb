@@ -4,7 +4,8 @@ class GundaApi
 
   # Returns a User object incl. dependencies
   def self.find_user(pnr)
-    client = Savon.client(wsdl: "#{APP_CONFIG['api_url']}/patronAccount.wsdl", basic_auth: [APP_CONFIG['api_user'], APP_CONFIG["api_password"]])
+    #client = Savon.client(wsdl: "#{APP_CONFIG['api_url']}/patronAccount.wsdl", basic_auth: [APP_CONFIG['api_user'], APP_CONFIG["api_password"]])
+    client = getSoapClient('patronAccount.wsdl')
 
     response = client.call(:patron_account, message: { barcode: pnr })
 
@@ -70,7 +71,7 @@ class GundaApi
 
       array.each do |req_raw|
         request = Request.new
-        #puts req
+        request.id = req_raw[:@request_id]
         request.title = req_raw[:request_bibliographic_record][:@title]
         request.pickup_location = req_raw[:pickup_location][:@pickup_location_name]
         request.expiration_date = req_raw[:@expiration_date]
@@ -112,12 +113,27 @@ class GundaApi
   # Authenticates a user account by username and password
   def self.authenticate_user(username:, password:)
 
-    client = Savon.client(wsdl: "#{APP_CONFIG['api_url']}/authenticatePatron.wsdl", basic_auth: [APP_CONFIG['api_user'], APP_CONFIG["api_password"]])
+    #client = Savon.client(wsdl: "#{APP_CONFIG['api_url']}/authenticatePatron.wsdl", basic_auth: [APP_CONFIG['api_user'], APP_CONFIG["api_password"]])
+    client = getSoapClient('authenticatePatron.wsdl')
     response = client.call(:authenticate_patron, message: {barcode: username, password: password})
 
     authenticated = response.body[:authenticate_patron_response][:authenticated]
 
     return authenticated
+  end
+
+  # Cancels a request based on barcode and request_id
+  def self.cancel_request(request_id:, barcode:)
+    client = getSoapClient('request.wsdl')
+
+    response = client.call(:cancel, message: {patronBarcode: barcode, id: request_id})
+    cancelled = response.body[:cancel_response][:success].to_i == 1
+
+    return cancelled
+  end
+
+  def self.getSoapClient(endpoint)
+    Savon.client(wsdl: "#{APP_CONFIG['api_url']}/#{endpoint}", basic_auth: [APP_CONFIG['api_user'], APP_CONFIG["api_password"]])
   end
 
 end
