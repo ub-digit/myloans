@@ -132,6 +132,17 @@ class GundaApi
     return cancelled
   end
 
+  def self.update_user(params)
+    client = getSoapClient('patronUpdate.wsdl')
+    response = client.call(:patron_update, message: params)
+
+    updated = response.body[:patron_update_response][:success]
+
+    pp response.body
+
+    return updated
+  end
+
   def self.getSoapClient(endpoint)
     Savon.client(wsdl: "#{APP_CONFIG['api_url']}/#{endpoint}", basic_auth: [APP_CONFIG['api_user'], APP_CONFIG["api_password"]])
   end

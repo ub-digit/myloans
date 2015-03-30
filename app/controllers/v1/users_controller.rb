@@ -38,6 +38,19 @@ class V1::UsersController < ApplicationController
 
   end
 
+  # Updates user attributes
+  def update
+    unless authenticate_user
+      render json: {message: "Invalid credentials, must give valid username and password"}, status: 401
+    end
+
+    if GundaApi.update_user(User.permitted_params(params))
+      render json: {success: true}, status: 200
+    else
+      render json: {success: false}, status: 400
+    end
+  end
+
   private
   def authenticate_user
     GundaApi.authenticate_user(username: params[:username], password: params[:password])
