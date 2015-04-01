@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   namespace :v1, :defaults => {:format => :json} do
     get 'users/show', to: 'users#show'
     get 'users/authenticate/', to: 'users#authenticate', :via => [:options]
+    delete 'users/cancel_request', to: 'users#cancel_request', :via => [:options]
   end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

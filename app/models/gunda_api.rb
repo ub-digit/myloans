@@ -4,14 +4,15 @@ class GundaApi
 
   # Returns a User object incl. dependencies
   def self.find_user(pnr)
-    client = Savon.client(wsdl: "#{APP_CONFIG['api_url']}/patronAccount.wsdl", basic_auth: [APP_CONFIG['api_user'], APP_CONFIG["api_password"]])
+    #client = Savon.client(wsdl: "#{APP_CONFIG['api_url']}/patronAccount.wsdl", basic_auth: [APP_CONFIG['api_user'], APP_CONFIG["api_password"]])
+    client = getSoapClient('patronAccount.wsdl')
 
     response = client.call(:patron_account, message: { barcode: pnr })
 
     user = User.new
 
     response = response.body[:patron_account_response]
-
+    #pp response
     user.name = response[:patron_name][:last]
     user.expiration_date = response[:expiration_date]
     user.barcode = response[:barcode].first
@@ -23,10 +24,13 @@ class GundaApi
     user.phone_nr                 = contact_information[:primary_address][:telephone]
     user.mobile_nr                = contact_information[:primary_address][:telephone_special]
     user.email                    = contact_information[:primary_address][:email]
+
     user.communication_preference = contact_information[:@communication_preference]
     user.preferred_language       = contact_information[:@preferred_language]
 
     user.total_fine = response[:fines][:@total_balance]
+
+    user.patron_type = response[:patron_type][:@patron_type_id]
     
 
     # Create loan objects
@@ -67,7 +71,7 @@ class GundaApi
 
       array.each do |req_raw|
         request = Request.new
-        #puts req
+        request.id = req_raw[:@request_id]
         request.title = req_raw[:request_bibliographic_record][:@title]
         request.pickup_location = req_raw[:pickup_location][:@pickup_location_name]
         request.expiration_date = req_raw[:@expiration_date]
@@ -92,7 +96,7 @@ class GundaApi
       array.each do |fine_raw|
         fine = Fine.new
         fine.title = fine_raw[:fine_bibliographic_record][:@title]
-        fine.type = fine_raw[:@fine_code]
+        fine.type = fine_raw[:@fine_code].downcase.tr(" ", "_") #Turn status to snakecase
         fine.amount = fine_raw[:@amount]
         fine.balance = fine_raw[:@balance]
         fine.date = fine_raw[:@date]
@@ -109,12 +113,38 @@ class GundaApi
   # Authenticates a user account by username and password
   def self.authenticate_user(username:, password:)
 
-    client = Savon.client(wsdl: "#{APP_CONFIG['api_url']}/authenticatePatron.wsdl", basic_auth: [APP_CONFIG['api_user'], APP_CONFIG["api_password"]])
+    #client = Savon.client(wsdl: "#{APP_CONFIG['api_url']}/authenticatePatron.wsdl", basic_auth: [APP_CONFIG['api_user'], APP_CONFIG["api_password"]])
+    client = getSoapClient('authenticatePatron.wsdl')
     response = client.call(:authenticate_patron, message: {barcode: username, password: password})
 
     authenticated = response.body[:authenticate_patron_response][:authenticated]
 
     return authenticated
+  end
+
+  # Cancels a request based on barcode and request_id
+  def self.cancel_request(request_id:, barcode:)
+    client = getSoapClient('request.wsdl')
+
+    response = client.call(:cancel, message: {patronBarcode: barcode, id: request_id})
+    cancelled = response.body[:cancel_response][:success].to_i == 1
+
+    return cancelled
+  end
+
+  def self.update_user(params)
+    client = getSoapClient('patronUpdate.wsdl')
+    response = client.call(:patron_update, message: params)
+
+    updated = response.body[:patron_update_response][:success]
+
+    pp response.body
+
+    return updated
+  end
+
+  def self.getSoapClient(endpoint)
+    Savon.client(wsdl: "#{APP_CONFIG['api_url']}/#{endpoint}", basic_auth: [APP_CONFIG['api_user'], APP_CONFIG["api_password"]])
   end
 
 end
