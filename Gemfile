@@ -37,6 +37,7 @@ gem 'rack-cors', :require => 'rack/cors'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
+
 group :test, :development do
   # Use rspec for testing
   gem 'rspec-rails', '~> 3.1'
@@ -57,6 +58,9 @@ group :development do
 
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
+  gem 'capistrano',  '~> 3.4.0'
+  gem 'capistrano-rails', '~> 1.1'
+  gem 'capistrano-passenger' #For passenger specific projects
   
 end
 
