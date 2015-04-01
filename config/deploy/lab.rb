@@ -7,7 +7,7 @@
 # server 'example.com', user: 'deploy', roles: %w{app web}, other_property: :other_value
 # server 'db.example.com', user: 'deploy', roles: %w{db}
 
-server 'myloans-server-test.ub.gu.se', user: 'installer', roles: %w{app db web}
+server 'myloans-server-test.ub.gu.se', user: 'rails', roles: %w{app db web}
 
 # Forces user to assign a valid tag for deploy
 def get_tag
