@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+  <soapenv:Body>
+    <chamo:renewalResponse xmlns:chamo="http://vtls.com/chamo/schemas">
+	  <successfulRenewals count="1">
+	  	<renewal dueDate="2015-06-29T23:59:00.000+02:00" recallableDate="2015-04-30T23:59:00.000+02:00">
+	  	  <item id="111111" title="JnxC4x81neshvari (BhxC4x81vxC4x81rthadipikxC4x81). : (A song-sermon on the BhagavadgitxC4x81.) Transl. from the MarxC4x81thi by V.G. PradhxC4x81n. Ed. and with an introd. by H.M. Lambert" barcode="115">
+	  	  </item>
+	  	</renewal>
+	  </successfulRenewals>
+	  <failedRenewals count="0">
+	  </failedRenewals>
+	</chamo:renewalResponse>
+  </soapenv:Body>
+</soapenv:Envelope>

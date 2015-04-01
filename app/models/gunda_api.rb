@@ -12,7 +12,6 @@ class GundaApi
     user = User.new
 
     response = response.body[:patron_account_response]
-    #pp response
     user.name = response[:patron_name][:last]
     user.expiration_date = response[:expiration_date]
     user.barcode = response[:barcode].first
@@ -47,6 +46,7 @@ class GundaApi
 
         checkout.barcode = checkout_raw[:checkout_item][:@barcode]
         checkout.title = checkout_raw[:checkout_bibliographic_record][:@title]
+        checkout.checkout_id = checkout_raw[:@checkout_id]
         checkout.due_date = checkout_raw[:@due_date]
         checkout.recallable_date = checkout_raw[:@recallable_date]
         checkout.status = checkout_raw[:@status]
@@ -132,13 +132,34 @@ class GundaApi
     return cancelled
   end
 
+  # Renews a checkout based on barcode and checkout_id
+  def self.renew(barcode:, checkout_id:)
+    client = getSoapClient('renewal.wsdl')
+    response = client.call(:renewal, message: {patronBarcode: barcode, selectedCheckouts: {:@checkoutId => checkout_id}})
+
+    if response.body[:renewal_response][:successful_renewals][:@count] == "1"
+      checkout_data = response.body[:renewal_response][:successful_renewals][:renewal]
+      
+      checkout = Checkout.new
+      checkout.barcode = checkout_data[:item][:@barcode]
+      checkout.title = checkout_data[:item][:@title]
+      checkout.checkout_id = checkout_id
+      checkout.due_date = checkout_data[:@due_date]
+      checkout.recallable_date = checkout_data[:@recallable_date]
+      checkout.status = "checkedOut"
+      checkout.renewable = false
+
+      return checkout
+    else 
+      return nil
+    end
+  end
+
   def self.update_user(params)
     client = getSoapClient('patronUpdate.wsdl')
     response = client.call(:patron_update, message: params)
 
     updated = response.body[:patron_update_response][:success]
-
-    pp response.body
 
     return updated
   end
