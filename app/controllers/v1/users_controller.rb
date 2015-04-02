@@ -44,7 +44,9 @@ class V1::UsersController < ApplicationController
       render json: {message: "Invalid credentials, must give valid username and password"}, status: 401
     end
 
-    if GundaApi.update_user(User.permitted_params(params))
+    user = User.new(params[:user])
+    #&& GundaApi.update_user(user.gunda_params)
+    if user.valid? 
       render json: {success: true}, status: 200
     else
       render json: {success: false}, status: 400
