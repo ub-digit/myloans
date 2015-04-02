@@ -147,7 +147,7 @@ class GundaApi
       checkout.due_date = checkout_data[:@due_date]
       checkout.recallable_date = checkout_data[:@recallable_date]
       checkout.status = "checkedOut"
-      checkout.renewable = false
+      checkout.renewable = "false"
 
       return checkout
     else 
