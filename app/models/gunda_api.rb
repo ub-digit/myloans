@@ -27,7 +27,7 @@ class GundaApi
     user.communication_preference = contact_information[:@communication_preference]
     user.preferred_language       = contact_information[:@preferred_language]
 
-    user.total_fine = response[:fines][:@total_balance]
+    user.total_fine = response[:fines][:@total_balance].to_i
 
     user.patron_type = response[:patron_type][:@patron_type_id]
     
