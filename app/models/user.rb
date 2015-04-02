@@ -11,6 +11,7 @@ class User
   validates :street, :presence => true
   validates :communication_preference, :inclusion => {:in => [nil, 0,1,2,3]}
   validate :email_valid
+  validates :barcode, :presence => true
 
   def email_valid
     # If email exists, check that format is correct
@@ -49,5 +50,16 @@ class User
     }
 
     return hash
+  end
+
+  def save!
+    return false if !self.valid?
+
+    if GundaApi.update_user(gunda_params)
+      return true
+    else
+      errors.add(:barcode, "Could not update post due to API error")
+      return false
+    end
   end
 end

@@ -1,4 +1,5 @@
 class V1::UsersController < ApplicationController
+  require 'pp'
 
   # Returns a full user object including child elements
   def show
@@ -56,11 +57,13 @@ class V1::UsersController < ApplicationController
       render json: {message: "Invalid credentials, must give valid username and password"}, status: 401
     end
 
-    user = User.new(params[:user])
-    #&& GundaApi.update_user(user.gunda_params)
-    if user.valid? 
+    params[:barcode] = params[:username]
+    user = User.new(params.permit(:city, :street, :postal_code, :communication_preference, :preferred_language, :phone_nr, :mobile_nr, :email, :barcode))
+
+    if user.save!
       render json: {success: true}, status: 200
     else
+      pp user.errors.messages
       render json: {success: false}, status: 400
     end
   end
