@@ -7,8 +7,21 @@
 # server 'example.com', user: 'deploy', roles: %w{app web}, other_property: :other_value
 # server 'db.example.com', user: 'deploy', roles: %w{db}
 
+server 'myloans-server-demo.ub.gu.se', user: 'rails', roles: %w{app db web}
 
+# Forces user to assign a valid tag for deploy
+def get_tag
+  all_tags = `git tag`.split("\n")
 
+  ask :answer, "Tag to deploy (make sure to push the tag first): #{all_tags} "
+  tag = fetch(:answer)
+  if !all_tags.include? tag
+    abort "Tag #{tag} is not a valid value"
+  end
+  tag
+end
+
+set :branch, get_tag # Sets branch according to given tag
 # role-based syntax
 # ==================
 
@@ -31,7 +44,8 @@
 # http://capistranorb.com/documentation/getting-started/configuration/
 # Feel free to add new variables to customise your setup.
 
-
+# Default deploy_to directory is /var/www/my_app_name
+set :deploy_to, '/data/demo/myloans'
 
 # Custom SSH Options
 # ==================
