@@ -38,6 +38,18 @@ class V1::UsersController < ApplicationController
 
   end
 
+  def renew
+    unless authenticate_user
+      render json: {message: "Invalid credentials, must give valid username and password"}, status: 401
+    end
+    checkout = GundaApi.renew(barcode: params[:username], checkout_id: params[:checkout_id])
+    if !checkout.nil?
+      render json: {success: true, checkout: checkout}, status: 200
+    else
+      render json: {success: false}, status: 400
+    end
+  end
+
   # Updates user attributes
   def update
     unless authenticate_user

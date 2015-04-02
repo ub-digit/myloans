@@ -178,7 +178,35 @@ RSpec.describe GundaApi, :type => :model do
         expect(user.fines.each{|fine| fine.class == Fine}).to be_truthy
       end
     end
+  end
 
+
+  describe "renew" do
+   context "when renewing a renewable checkout for a user" do
+      it "will return checkout data" do
+        message = {patronBarcode: "90", selectedCheckouts: {:@checkoutId => "123456"}}
+        fixture = File.read("spec/fixtures/renew/success.xml")
+        savon.expects(:renewal).with(message: message).returns(fixture)
+
+        checkout = GundaApi.renew(barcode: "90", checkout_id: "123456")
+        expect(checkout.barcode).to be_truthy
+        expect(checkout.title).to be_truthy
+        expect(checkout.checkout_id).to be_truthy
+        expect(checkout.due_date).to be_truthy
+        expect(checkout.recallable_date).to be_truthy
+        expect(checkout.status).to be_truthy
+      end
+    end
+    context "when renewing a non-renewable checkout for a user" do
+      it "will return an empty data object" do
+        message = {patronBarcode: "91", selectedCheckouts: {:@checkoutId => "654321"}}
+        fixture = File.read("spec/fixtures/renew/error.xml")
+        savon.expects(:renewal).with(message: message).returns(fixture)
+
+        checkout = GundaApi.renew(barcode: "91", checkout_id: "654321")
+        expect(checkout.nil?).to be_truthy
+      end
+    end
 
   end
 end
